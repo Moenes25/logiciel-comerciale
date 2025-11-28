@@ -1,0 +1,347 @@
+.dossiers-container {
+    padding: 0;
+    background: #f8fafc;
+    min-height: 100vh;
+  }
+  
+  .dossiers-header {
+    background: white;
+    padding: 30px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .dossiers-header .header-left h1 {
+    font-size: 28px;
+    color: #1e293b;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  
+  .dossiers-header .header-left p {
+    color: #64748b;
+    font-size: 14px;
+    margin: 0;
+  }
+  
+  .dossiers-header .header-right {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  
+  .back-btn {
+    padding: 10px 20px;
+    background: #64748b;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .back-btn:hover {
+    background: #475569;
+  }
+  
+  .add-btn {
+    padding: 12px 24px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .add-btn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+  }
+  
+  .dossiers-toolbar {
+    background: white;
+    padding: 20px 30px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .search-box {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+  }
+  
+  .search-box input {
+    width: 100%;
+    padding: 12px 16px 12px 45px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+  
+  .search-box input:focus {
+    outline: none;
+    border-color: #3b82f6;
+  }
+  
+  .search-box span {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+  }
+  
+  .filters {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .filters select {
+    padding: 10px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+  }
+  
+  .dossiers-grid {
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 25px;
+  }
+  
+  .dossier-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+  }
+  
+  .dossier-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .dossier-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .dossier-icon {
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f5f9;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  
+  .dossier-info {
+    flex: 1;
+  }
+  
+  .dossier-info h3 {
+    margin: 0 0 4px 0;
+    color: #1e293b;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  
+  .dossier-info p {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+  }
+  
+  .dossier-metadata {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-end;
+  }
+  
+  .priority-badge,
+  .status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+  }
+  
+  .dossier-description {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border-left: 4px solid #3b82f6;
+  }
+  
+  .dossier-description p {
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .dossier-details {
+    margin-bottom: 20px;
+  }
+  
+  .detail-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .detail-row:last-child {
+    margin-bottom: 0;
+  }
+  
+  .detail-row .detail-item {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f8fafc;
+    border-radius: 6px;
+  }
+  
+  .detail-row .detail-item span:first-child {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .detail-row .detail-item span:last-child {
+    color: #1e293b;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  
+  .dossier-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .dossier-actions .action-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .dossier-actions .action-btn.view {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+  
+  .dossier-actions .action-btn.edit {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  
+  .dossier-actions .action-btn.client {
+    background: #f3e8ff;
+    color: #7c3aed;
+  }
+  
+  .dossier-actions .action-btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 60px 30px;
+    background: white;
+    border-radius: 12px;
+    margin: 30px;
+    border: 2px dashed #e2e8f0;
+  }
+  
+  .empty-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+  }
+  
+  .empty-state h3 {
+    color: #1e293b;
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+  
+  .empty-state p {
+    color: #64748b;
+    margin-bottom: 25px;
+  }
+  
+  /* Responsive pour dossiers */
+  @media (max-width: 768px) {
+    .dossiers-header {
+      flex-direction: column;
+      gap: 15px;
+      text-align: center;
+    }
+  
+    .dossiers-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .dossiers-toolbar .filters {
+      flex-direction: column;
+    }
+  
+    .dossiers-grid {
+      grid-template-columns: 1fr;
+      padding: 20px;
+    }
+  
+    .dossier-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .dossier-metadata {
+      flex-direction: row;
+      width: 100%;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+  
+    .detail-row {
+      flex-direction: column;
+      gap: 8px;
+    }
+  
+    .dossier-actions {
+      flex-direction: column;
+    }
+  }
