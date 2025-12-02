@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+/* styles “design system” globalisés via Tailwind */
+@layer components {
+  .glass {
+    @apply bg-white/85 backdrop-blur supports-[backdrop-filter]:bg-white/70;
+  }
+  .card {
+    @apply rounded-2xl border border-neutral-200 bg-white shadow-sm;
+  }
+  .icon-chip {
+    @apply grid place-items-center w-7 h-7 rounded-lg bg-gradient-to-br from-neutral-100 to-neutral-50;
+  }
+}
+
+@layer utilities {
+  .hover-lift { @apply transition-transform hover:translate-x-[2px]; }
+}
+
+
+
+
+
+
