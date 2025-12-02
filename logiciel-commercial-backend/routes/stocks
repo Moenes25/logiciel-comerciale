@@ -1,0 +1,261 @@
+const express = require('express');
+const router = express.Router();
+const Stock = require('../models/Stock');
+const { protect, authorize } = require('../middleware/auth');
+const Produit = require('../models/Produit');
+
+router.use(protect);
+
+// POST create or update stock (à la création du produit)
+router.post('/', async (req, res) => {
+  try {
+    // Vérifier si le produit existe
+    const produit = await Produit.findById(req.body.produit);
+    if (!produit) {
+      return res.status(404).json({ message: 'Produit non trouvé' });
+    }
+    
+    // Vérifier si un stock existe déjà pour ce produit
+    const existingStock = await Stock.findOne({ produit: req.body.produit });
+    
+    let stock;
+    if (existingStock) {
+      // Mettre à jour le stock existant
+      stock = await Stock.findByIdAndUpdate(
+        existingStock._id, 
+        req.body, 
+        { new: true, runValidators: true }
+      );
+    } else {
+      // Créer un nouveau stock
+      stock = await Stock.create(req.body);
+    }
+    
+    res.status(201).json(stock);
+  } catch (error) {
+    console.error("Erreur création/MAJ stock:", error.message);
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
+router.get('/', async (req, res) => {
+  try {
+    const stocks = await Stock.find()
+      .populate('produit', 'reference designation prixAchat prixVente categorie')
+      .sort({ dateMiseAJour: -1 });
+    
+    res.json(stocks);
+  } catch (error) {
+    console.error("Erreur récupération stocks:", error.message);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
+// GET stock by produit ID
+router.get('/produit/:produitId', async (req, res) => {
+  try {
+    const stock = await Stock.findOne({ produit: req.params.produitId })
+      .populate('produit', 'reference designation prixAchat prixVente categorie');
+    
+    if (!stock) {
+      return res.status(404).json({ message: 'Stock non trouvé pour ce produit' });
+    }
+    
+    res.json(stock);
+  } catch (error) {
+    console.error("Erreur récupération stock:", error.message);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
+// GET stock by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const stock = await Stock.findById(req.params.id)
+      .populate('produit', 'reference designation prixAchat prixVente categorie');
+    
+    if (!stock) {
+      return res.status(404).json({ message: 'Stock non trouvé' });
+    }
+    
+    res.json(stock);
+  } catch (error) {
+    console.error("Erreur récupération stock:", error.message);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
+
+// PUT update stock (modification directe)
+router.put('/:id', authorize('admin', 'manager'), async (req, res) => {
+  try {
+    const stock = await Stock.findByIdAndUpdate(
+      req.params.id, 
+      req.body, 
+      { new: true, runValidators: true }
+    )
+      .populate('produit', 'reference designation prixAchat prixVente categorie');
+    
+    if (!stock) {
+      return res.status(404).json({ message: 'Stock non trouvé' });
+    }
+    
+  
+    await stock.save();
+    
+    res.json(stock);
+  } catch (error) {
+    console.error("Erreur MAJ stock:", error.message);
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
+// PUT ajouter quantité au stock (entrée)
+router.put('/:id/entree', authorize('admin', 'manager'), async (req, res) => {
+  try {
+    const { quantite, reference } = req.body;
+    
+    if (!quantite || quantite <= 0) {
+      return res.status(400).json({ message: 'Quantité invalide' });
+    }
+    
+    const stock = await Stock.findById(req.params.id);
+    
+    if (!stock) {
+      return res.status(404).json({ message: 'Stock non trouvé' });
+    }
+    
+    // Mettre à jour les quantités
+    stock.quantite += quantite;
+    stock.derniereEntree = new Date();
+  
+    
+    await stock.save();
+    
+    const stockPopulated = await Stock.findById(stock._id)
+      .populate('produit', 'reference designation prixAchat prixVente categorie');
+    
+    res.json({
+      message: `Entrée de ${quantite} unités enregistrée`,
+      stock: stockPopulated
+    });
+  } catch (error) {
+    console.error("Erreur entrée stock:", error.message);
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
+// PUT retirer quantité du stock (sortie)
+router.put('/:id/sortie', authorize('admin', 'manager'), async (req, res) => {
+  try {
+    const { quantite, reference } = req.body;
+    
+    if (!quantite || quantite <= 0) {
+      return res.status(400).json({ message: 'Quantité invalide' });
+    }
+    
+    const stock = await Stock.findById(req.params.id);
+    
+    if (!stock) {
+      return res.status(404).json({ message: 'Stock non trouvé' });
+    }
+    
+    // Vérifier si le stock est suffisant
+    if (stock.quantite < quantite) {
+      return res.status(400).json({ 
+        message: `Stock insuffisant. Disponible: ${stock.quantite}, Demandé: ${quantite}` 
+      });
+    }
+    
+    // Mettre à jour les quantités
+    stock.quantite -= quantite;
+    stock.derniereSortie = new Date();
+   
+    
+    await stock.save();
+    
+    const stockPopulated = await Stock.findById(stock._id)
+      .populate('produit', 'reference designation prixAchat prixVente categorie');
+    
+    res.json({
+      message: `Sortie de ${quantite} unités enregistrée`,
+      stock: stockPopulated
+    });
+  } catch (error) {
+    console.error("Erreur sortie stock:", error.message);
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
+// GET alertes de stock
+router.get('/alertes', authorize('admin', 'manager'), async (req, res) => {
+  try {
+    const stocks = await Stock.find()
+      .populate('produit', 'reference designation');
+    
+    const alertes = {
+      ruptures: [],
+      stockBas: [],
+      stockTropEleve: []
+    };
+    
+    stocks.forEach(stock => {
+      if (stock.quantite <= 0) {
+        alertes.ruptures.push({
+          produitId: stock.produit._id,
+          reference: stock.produit.reference,
+          designation: stock.produit.designation,
+          quantite: stock.quantite,
+          stockId: stock._id
+        });
+      } else if (stock.quantite < stock.stockMin) {
+        alertes.stockBas.push({
+          produitId: stock.produit._id,
+          reference: stock.produit.reference,
+          designation: stock.produit.designation,
+          quantite: stock.quantite,
+          stockMin: stock.stockMin,
+          stockId: stock._id
+        });
+      } else if (stock.quantite > stock.stockMax) {
+        alertes.stockTropEleve.push({
+          produitId: stock.produit._id,
+          reference: stock.produit.reference,
+          designation: stock.produit.designation,
+          quantite: stock.quantite,
+          stockMax: stock.stockMax,
+          stockId: stock._id
+        });
+      }
+    });
+    
+    res.json(alertes);
+  } catch (error) {
+    console.error("Erreur alertes:", error.message);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
+
+// DELETE stock (uniquement admin)
+router.delete('/:id', authorize('admin'), async (req, res) => {
+  try {
+    const stock = await Stock.findByIdAndDelete(req.params.id);
+    
+    if (!stock) {
+      return res.status(404).json({ message: 'Stock non trouvé' });
+    }
+    
+    res.json({ message: 'Stock supprimé avec succès' });
+  } catch (error) {
+    console.error("Erreur suppression stock:", error.message);
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
+module.exports = router;
