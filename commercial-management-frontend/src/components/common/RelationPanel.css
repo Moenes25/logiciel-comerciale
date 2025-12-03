@@ -1,0 +1,208 @@
+.relation-panel {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+  }
+  
+  .relation-panel.loading {
+    padding: 40px;
+    text-align: center;
+    color: #64748b;
+  }
+  
+  .relation-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+  }
+  
+  .relation-header h3 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  .relation-tabs {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .tab-btn {
+    padding: 8px 16px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .tab-btn:hover {
+    background: #f1f5f9;
+  }
+  
+  .tab-btn.active {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+  }
+  
+  .relation-content {
+    padding: 25px;
+  }
+  
+  /* Overview Grid */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+  }
+  
+  .stat-card {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .stat-card.highlight {
+    background: #dbeafe;
+    border-color: #3b82f6;
+  }
+  
+  .stat-value {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 4px;
+  }
+  
+  .stat-label {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Relation Lists */
+  .relation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .relation-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+  }
+  
+  .relation-item:hover {
+    background: #f1f5f9;
+    transform: translateX(4px);
+  }
+  
+  .item-main {
+    flex: 1;
+  }
+  
+  .item-main strong {
+    display: block;
+    color: #1e293b;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  
+  .item-main .date,
+  .item-main .type {
+    font-size: 12px;
+    color: #64748b;
+  }
+  
+  .item-details {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .statut {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .statut.en-cours,
+  .statut.actif,
+  .statut.payée {
+    background: #d1fae5;
+    color: #065f46;
+  }
+  
+  .statut.en-attente {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  
+  .statut.livré {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+  
+  .total {
+    font-weight: 600;
+    color: #059669;
+  }
+  
+  .item-client {
+    font-size: 12px;
+    color: #64748b;
+    font-style: italic;
+  }
+  
+  .no-data {
+    text-align: center;
+    padding: 40px;
+    color: #64748b;
+    font-style: italic;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .relation-header {
+      flex-direction: column;
+      gap: 15px;
+      align-items: stretch;
+    }
+  
+    .relation-tabs {
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  
+    .relation-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  
+    .item-details {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
